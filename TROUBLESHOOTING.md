@@ -122,6 +122,13 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 ### Build warning: `localStorage is not available because --localstorage-file was not provided`
 - **Impact:** Harmless. It comes from an experimental feature in Node 26, and the build still completes.
 
+## Publishing to GitHub Pages
+
+### Ran the deploy workflow twice
+- **Symptom:** The Actions tab lists a second "Deploy to GitHub Pages" run that you didn't mean to start.
+- **Impact:** Harmless. Each run builds from the latest files on `main` and republishes the same site. If two overlap, `concurrency: cancel-in-progress` in `deploy.yml` cancels the older one, which then shows a grey "cancelled" icon (not an error).
+- **Tip:** After clicking **Run workflow**, wait a few seconds for the new run to appear in the list rather than clicking again.
+
 ## Adding pages and links
 
 ### The "Portfolio" navbar link opens the homepage
