@@ -113,6 +113,12 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Cause:** The navbar links to four pages that don't exist yet. The navbar is on every page, so every page reports the same links. `npm start` only shows "Page Not Found" for them, but `npm run build` refuses to finish, because `onBrokenLinks: 'throw'` blocks broken links from reaching the live site.
 - **Fix:** Create the four pages in `src/pages` (`about.md`, `resume.md`, `projects.md` and `how-i-built-this.md`), even as placeholders. **Don't** change `onBrokenLinks` to make the error go away, because then real broken links would slip through later.
 
+### Build fails: "`description` must be a string"
+- **Symptom:** `npm run build` stops with `The following front matter: description: null contains invalid values for field(s): description`, then `Processing of page source file path=projects.md failed`.
+- **Cause:** The page's front matter (the settings between the two `---` lines) had `description:` with nothing after it. YAML reads an empty value as "null" (nothing), and Docusaurus requires the description to be text.
+- **Fix:** Either delete the `description:` line, or give it a value, for example `description: Selected work by Diana John`. The page body was also empty, which is allowed but shows a blank page, so add a line like `Coming soon.`
+- **Lesson:** Run `npm run build` after every change, even small ones, before committing.
+
 ### Build warning: `localStorage is not available because --localstorage-file was not provided`
 - **Impact:** Harmless. It comes from an experimental feature in Node 26, and the build still completes.
 
