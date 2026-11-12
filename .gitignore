@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Docusaurus
+.docusaurus
+build/
+.cache-loader
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (can contain secrets like API keys)
+.env
+.env.*
+
+# Claude Code local settings (personal, per-computer)
+.claude/settings.local.json
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
