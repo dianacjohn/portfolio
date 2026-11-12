@@ -6,6 +6,7 @@ At Nokia, I write and maintain documentation for SR Linux, a data center network
 
 That work started with the AI assistant built into the SR Linux CLI. I partnered with another writer to prepare our security documentation for it, then tested its answers against the source. It pulled answers from the internet, described features the product never had, and dropped brackets from code samples. The lesson stuck with me: an AI is only as good as the content it reads, and it fails quietly. I later designed test scenarios for our Kapa.ai documentation chatbot, which led to a new response that routes out-of-scope questions to Nokia Services.
 
+
 When something is missing from our workflow, I build it. I proposed and built an email-to-Jira feedback system now used across 14 products, created Cursor skills for release notes and glossary work (colleagues still use the release notes skills), and co-developed the version switcher in our WebHelp portal.
 
 Two rules I carried over from engineering still shape how I work:
