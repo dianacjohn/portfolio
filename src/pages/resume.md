@@ -8,7 +8,7 @@ toc_max_heading_level: 2
 
 **Software Engineer turned Content Engineer** | AI-Ready Documentation & Chatbot Evaluation | Docs-as-Code
 
-[dianacjohn@gmail.com](mailto:dianacjohn@gmail.com) | [linkedin.com/in/diana-biji](https://www.linkedin.com/in/diana-biji) | California, USA
+[linkedin.com/in/diana-biji](https://www.linkedin.com/in/diana-biji) | California, USA
 
 [Download resume (PDF)](pathname:///Diana_John_Content_Engineer_Resume.pdf)
 
