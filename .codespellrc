@@ -1,0 +1,2 @@
+[codespell]
+skip = ./node_modules,./build,./.docusaurus,./.git,package-lock.json,*.pdf,*.ico,./.github/styles/Google
