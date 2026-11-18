@@ -1,0 +1,11 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: error
+ignorecase: false
+swap:
+  '5g': 5G
+  '3gpp|3Gpp': 3GPP
+  'GNB|Gnb|gnb|gNodeb': gNB
+  'ENB|Enb|enb': eNB
+  'Rel-16|Rel 16|Release-16': Release 16
+  'O-Ran|ORAN|O-ran': O-RAN
