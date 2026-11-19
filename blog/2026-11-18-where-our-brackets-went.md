@@ -32,7 +32,7 @@ BGP graceful restart, for example, became three chunks:
 - Enabling graceful restart and BGP session re-establishment
 - Using graceful restart with In-Service Software Upgrade (ISSU)
 
-We also introduced every example with "The following example…", so each one stayed attached to the concept it illustrates.
+We also introduced every example with `The following example…`, so each one stayed attached to the concept it illustrates.
 
 ## The pages I almost cut
 
