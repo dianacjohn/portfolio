@@ -1,5 +1,5 @@
 ---
-title: Where our closing brackets went
+title: DITA-OT, Markdown, and a vector database: 3 lessons from preparing docs for AI
 authors: diana
 tags: [ai-ready-content, rag, dita]
 ---
