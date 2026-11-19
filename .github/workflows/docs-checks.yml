@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: errata-ai/vale-action@v2
         with:
-          files: '["src/pages", "README.md"]'
+          files: '["src/pages/about.md", "src/pages/resume.md", "src/pages/projects.md", "README.md"]'
           fail_on_error: true
 
   vale-blog:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: errata-ai/vale-action@v2
         with:
-          files: '["blog"]'
+          files: '["blog", "src/pages/how-i-built-this.md"]'
           fail_on_error: true
           vale_flags: "--minAlertLevel=error"
 

@@ -71,7 +71,9 @@ const config = {
     ({
       
       colorMode: {
-        respectPrefersColorScheme: true,
+        defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
        navbar: {
         title: 'Diana John',
@@ -81,10 +83,11 @@ const config = {
           {to: '/projects', label: 'Portfolio', position: 'left'},
           {to: '/blog', label: 'Blog', position: 'left'},
           {to: '/how-i-built-this', label: 'How I built this', position: 'left'},
+		  {href: 'https://github.com/dianacjohn/portfolio/blob/main/TROUBLESHOOTING.md', label: 'Troubleshooting', position: 'left'},
         ],
       },
        footer: {
-        style: 'dark',
+        style: 'light',
         copyright: `Copyright © ${new Date().getFullYear()} Diana John. Built with Docusaurus.`,
       },
       prism: {

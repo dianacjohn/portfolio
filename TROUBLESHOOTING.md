@@ -102,6 +102,11 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Cause:** `baseUrl` is `/portfolio/` (needed for GitHub Pages), so the site is served under that path.
 - **Fix:** Open `http://localhost:3000/portfolio/`. The terminal prints this address after "Docusaurus website is running at".
 
+### Changed the color to blue, but the site still looked teal and dark
+- **Symptom:** After changing `--ifm-color-primary` in `src/css/custom.css` to office blue, the homepage still had a dark background and a teal banner.
+- **Cause:** My computer is in dark mode, so the site used the **dark mode** colors in the `[data-theme='dark']` block, which were still the template's teal. The new blue only applied in light mode.
+- **Fix:** In `docusaurus.config.js`, set `colorMode` to `defaultMode: 'light'`, `disableSwitch: true` and `respectPrefersColorScheme: false`, so the site is always white with blue accents. Restart `npm start` if the change doesn't show.
+
 ### GitHub.com still shows an empty repo
 - **Cause:** New and changed files stay on your computer until you **commit and push** in GitHub Desktop.
 - **Fix:** Nothing is wrong. To see local changes, open GitHub Desktop, check that **Current repository** is `portfolio`, and look at the **Changes** tab.
@@ -156,6 +161,16 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Why not change `.vale.ini`:** `MinAlertLevel` is a global setting. Vale doesn't allow a different value for one folder, so the per-folder difference has to live in the workflow.
 - **Watch out:** With the original settings, editing the About or Resume page can fail Vale on normal first-person words like "I" and "my".
 
+### "How I built this" is first person too
+- **Cause:** The strict `vale` job checked all of `src/pages`, and the How I built this page is written in first person ("I", "my"), so it would fail on warnings.
+- **Fix:** The strict `vale` job now lists its pages by name (`about.md`, `resume.md`, `projects.md` and `README.md`), and the errors-only `vale-blog` job checks `blog` plus `src/pages/how-i-built-this.md`. The page still gets checked for real errors, such as my telecom terms.
+- **Watch out:** Because pages are listed by name, a **new** page in `src/pages` isn't checked by Vale until I add it to one of the two `files:` lists in `docs-checks.yml`.
+
+### A workflow file stops working because of indentation
+- **Symptom:** In `docs-checks.yml`, `files:` was indented 8 spaces, while `fail_on_error:` below it was indented 10.
+- **Cause:** In YAML, indentation shows what belongs to what. `files:` has to sit inside `with:`, lined up with the other settings. With the wrong indentation, GitHub can't read the workflow, and none of the checks run.
+- **Fix:** Line up every setting under `with:` in the same column. Use spaces, never Tab.
+
 ### Error: "reviewdog: Too many results (annotations) in diff"
 - **Cause:** GitHub shows at most 10 warning and 10 error annotations per step, so long result lists get cut off.
 - **Impact:** This message on its own doesn't mean there are hidden errors. Errors and warnings have separate limits, so if no error annotations appear, there were no errors.
@@ -164,6 +179,13 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 ### Commas and periods go inside quotation marks
 - **Symptom:** `[Google.Quotes] Commas and periods go inside quotation marks.` on `with "The following example…", so`.
 - **Fix:** Rewrite the sentence, or, when quoting literal text, use code formatting: `` `The following example…` ``. Vale skips code.
+
+### Lychee: "Cannot resolve root-relative link"
+- **Symptom:** The links check failed with `[ERROR] … Cannot resolve root-relative link '/blog/2026/11/18/where-our-brackets-went': To resolve root-relative links in local files, provide a root dir`.
+- **Cause:** A link that starts with `/` means "from the root of the website". Docusaurus understands it (so `npm run build` passed), but Lychee checks the Markdown files, not the built site, so it can't tell where `/blog/…` points.
+- **Fix:** Use the full address, `https://dianacjohn.github.io/portfolio/blog/2026/11/18/where-our-brackets-went`. Lychee checks it online and will catch it if the post ever moves.
+- **Trade-off:** In a local preview (`npm start`), the link opens the live site instead of the local copy.
+- **Also good to know:** A blog post's address includes its date (`/blog/2026/11/18/…`), taken from the file name, not just `/blog/<name>`.
 
 ### The link checker skips LinkedIn
 - **Cause:** LinkedIn blocks automated tools and answers link checkers with an error (often status 999), even when the page works in a browser. Without an exception, Lychee would fail every pull request on the LinkedIn link on the Resume page.
