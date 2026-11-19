@@ -71,7 +71,9 @@ const config = {
     ({
       
       colorMode: {
-        respectPrefersColorScheme: true,
+        defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
        navbar: {
         title: 'Diana John',
@@ -84,7 +86,7 @@ const config = {
         ],
       },
        footer: {
-        style: 'dark',
+        style: 'light',
         copyright: `Copyright © ${new Date().getFullYear()} Diana John. Built with Docusaurus.`,
       },
       prism: {

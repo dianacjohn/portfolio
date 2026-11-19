@@ -102,6 +102,11 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Cause:** `baseUrl` is `/portfolio/` (needed for GitHub Pages), so the site is served under that path.
 - **Fix:** Open `http://localhost:3000/portfolio/`. The terminal prints this address after "Docusaurus website is running at".
 
+### Changed the color to blue, but the site still looked teal and dark
+- **Symptom:** After changing `--ifm-color-primary` in `src/css/custom.css` to office blue, the homepage still had a dark background and a teal banner.
+- **Cause:** My computer is in dark mode, so the site used the **dark mode** colors in the `[data-theme='dark']` block, which were still the template's teal. The new blue only applied in light mode.
+- **Fix:** In `docusaurus.config.js`, set `colorMode` to `defaultMode: 'light'`, `disableSwitch: true` and `respectPrefersColorScheme: false`, so the site is always white with blue accents. Restart `npm start` if the change doesn't show.
+
 ### GitHub.com still shows an empty repo
 - **Cause:** New and changed files stay on your computer until you **commit and push** in GitHub Desktop.
 - **Fix:** Nothing is wrong. To see local changes, open GitHub Desktop, check that **Current repository** is `portfolio`, and look at the **Changes** tab.
