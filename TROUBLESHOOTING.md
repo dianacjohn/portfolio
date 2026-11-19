@@ -161,6 +161,16 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Why not change `.vale.ini`:** `MinAlertLevel` is a global setting. Vale doesn't allow a different value for one folder, so the per-folder difference has to live in the workflow.
 - **Watch out:** With the original settings, editing the About or Resume page can fail Vale on normal first-person words like "I" and "my".
 
+### "How I built this" is first person too
+- **Cause:** The strict `vale` job checked all of `src/pages`, and the How I built this page is written in first person ("I", "my"), so it would fail on warnings.
+- **Fix:** The strict `vale` job now lists its pages by name (`about.md`, `resume.md`, `projects.md` and `README.md`), and the errors-only `vale-blog` job checks `blog` plus `src/pages/how-i-built-this.md`. The page still gets checked for real errors, such as my telecom terms.
+- **Watch out:** Because pages are listed by name, a **new** page in `src/pages` isn't checked by Vale until I add it to one of the two `files:` lists in `docs-checks.yml`.
+
+### A workflow file stops working because of indentation
+- **Symptom:** In `docs-checks.yml`, `files:` was indented 8 spaces, while `fail_on_error:` below it was indented 10.
+- **Cause:** In YAML, indentation shows what belongs to what. `files:` has to sit inside `with:`, lined up with the other settings. With the wrong indentation, GitHub can't read the workflow, and none of the checks run.
+- **Fix:** Line up every setting under `with:` in the same column. Use spaces, never Tab.
+
 ### Error: "reviewdog: Too many results (annotations) in diff"
 - **Cause:** GitHub shows at most 10 warning and 10 error annotations per step, so long result lists get cut off.
 - **Impact:** This message on its own doesn't mean there are hidden errors. Errors and warnings have separate limits, so if no error annotations appear, there were no errors.
