@@ -152,7 +152,7 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 ### Every Vale warning failed the pull request, not only errors
 - **Symptom:** After fixing the only error in my first blog post, Vale still failed. The remaining findings were warnings and suggestions, such as `[Google.We] Try to avoid using first-person plural like 'we'`.
 - **Cause:** The workflow sets `fail_on_error: true`. In the Vale action, that fails the check on any reported finding, including warnings and suggestions. (Claude first told me warnings wouldn't fail the check. That was wrong, and the second run proved it.)
-- **Fix:** Blog posts are meant to be first person, so I run Vale on the blog with errors only. In `docs-checks.yml`, the `vale` job checks `src/pages` and `README.md` with the original settings, and a new `vale-blog` job checks `blog` with `vale_flags: "--minAlertLevel=error"`. *(Not yet confirmed: after pushing, PR #2 should show both `vale` and `vale-blog` as green.)*
+- **Fix:** Blog posts are meant to be first person, so I run Vale on the blog with errors only. In `docs-checks.yml`, the `vale` job checks `src/pages` and `README.md` with the original settings, and a new `vale-blog` job checks `blog` with `vale_flags: "--minAlertLevel=error"`. Confirmed on PR #2: `vale`, `vale-blog`, codespell and links all passed.
 - **Why not change `.vale.ini`:** `MinAlertLevel` is a global setting. Vale doesn't allow a different value for one folder, so the per-folder difference has to live in the workflow.
 - **Watch out:** With the original settings, editing the About or Resume page can fail Vale on normal first-person words like "I" and "my".
 
