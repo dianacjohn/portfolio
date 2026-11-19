@@ -54,4 +54,4 @@ I changed a blog post title and forgot that a colon in a title needs quotation m
 ## Further reading
 
 - [Troubleshooting guide](https://github.com/dianacjohn/portfolio/blob/main/TROUBLESHOOTING.md): every problem I hit while building this site, and how I fixed it.
-- [My first blog post](/blog/2026/11/18/where-our-brackets-went): what I learned preparing DITA content for an AI assistant.
+- [My first blog post](https://dianacjohn.github.io/portfolio/blog/2026/11/18/where-our-brackets-went): what I learned preparing DITA content for an AI assistant.

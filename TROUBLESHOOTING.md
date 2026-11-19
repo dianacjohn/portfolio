@@ -180,6 +180,13 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Symptom:** `[Google.Quotes] Commas and periods go inside quotation marks.` on `with "The following example…", so`.
 - **Fix:** Rewrite the sentence, or, when quoting literal text, use code formatting: `` `The following example…` ``. Vale skips code.
 
+### Lychee: "Cannot resolve root-relative link"
+- **Symptom:** The links check failed with `[ERROR] … Cannot resolve root-relative link '/blog/2026/11/18/where-our-brackets-went': To resolve root-relative links in local files, provide a root dir`.
+- **Cause:** A link that starts with `/` means "from the root of the website". Docusaurus understands it (so `npm run build` passed), but Lychee checks the Markdown files, not the built site, so it can't tell where `/blog/…` points.
+- **Fix:** Use the full address, `https://dianacjohn.github.io/portfolio/blog/2026/11/18/where-our-brackets-went`. Lychee checks it online and will catch it if the post ever moves.
+- **Trade-off:** In a local preview (`npm start`), the link opens the live site instead of the local copy.
+- **Also good to know:** A blog post's address includes its date (`/blog/2026/11/18/…`), taken from the file name, not just `/blog/<name>`.
+
 ### The link checker skips LinkedIn
 - **Cause:** LinkedIn blocks automated tools and answers link checkers with an error (often status 999), even when the page works in a browser. Without an exception, Lychee would fail every pull request on the LinkedIn link on the Resume page.
 - **Fix:** `.lycheeignore` contains `https://www.linkedin.com/.*`, so Lychee skips LinkedIn links. Check them by hand now and then.
