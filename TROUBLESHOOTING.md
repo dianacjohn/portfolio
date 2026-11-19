@@ -119,8 +119,64 @@ Issues hit while building this site, and how they were resolved. Grouped by stag
 - **Fix:** Either delete the `description:` line, or give it a value, for example `description: Selected work by Diana John`. The page body was also empty, which is allowed but shows a blank page, so add a line like `Coming soon.`
 - **Lesson:** Run `npm run build` after every change, even small ones, before committing.
 
+### Build fails: "MDX compilation failed … Unexpected character `!`"
+- **Symptom:** `npm run build` stops with `MDX compilation failed for file "…\blog\2026-11-18-where-our-brackets-went.md"` and `Unexpected character '!' (U+0021) before name`, pointing at line 11.
+- **Cause:** Line 11 was `<!-- truncate -->`, an HTML comment. Docusaurus reads blog posts as MDX, which doesn't accept HTML comments. The `!` in `<!--` is the "unexpected character".
+- **Fix:** Use the MDX comment form, `{/* truncate */}`. Docusaurus still recognizes it as the marker for where the post preview ends. (The error message itself suggests this: "to create a comment in MDX, use `{/* text */}`".)
+- **Note:** The broken line came from a draft Claude wrote. The build caught it before it reached GitHub.
+
 ### Build warning: `localStorage is not available because --localstorage-file was not provided`
 - **Impact:** Harmless. It comes from an experimental feature in Node 26, and the build still completes.
+
+## Docs checks on pull requests (Vale, codespell, Lychee)
+
+### Vale passed, but it checked nothing
+- **Symptom:** All three checks were green on the first pull request, but Vale never flagged anything, not even text that broke my own rules.
+- **Cause:** `.vale.ini` was empty (0 bytes). With no styles, rules or word list, Vale had nothing to report, so it passed. My custom rule (`Telecom5G.yml`) was in the repo but never ran.
+- **Fix:** Fill in `.vale.ini`: `StylesPath`, `MinAlertLevel`, `Packages = Google`, `Vocab = Portfolio`, and a `[*.{md,mdx}]` section with `BasedOnStyles = Vale, Google, Portfolio`.
+- **Lesson:** A passing check means the tool found nothing. It doesn't mean the tool looked.
+
+### Vale was still green after the fix
+- **Cause:** The Vale GitHub action only checks lines that a pull request adds or changes. The fix changed `.vale.ini`, not any Markdown page, so Vale had nothing new to read.
+- **Fix:** Test the test. Add a line with a deliberate mistake (for example `5g` and `3gpp`) to a Markdown file in the pull request and push. Vale should fail with messages from your own rule, such as `[Portfolio.Telecom5G] Use '5G' instead of '5g'.` Then remove the test line.
+
+### Vale flagged a line I hadn't touched in the test
+- **Symptom:** The 5G test also failed on the README placeholder `Placeholder — README coming soon.`
+- **Cause:** `[Google.EmDash] Don't put a space before or after a dash.` A real mistake that the test happened to expose.
+- **Fix:** Rewrite the line without spaced dashes.
+
+### Vale's own spell checker duplicated codespell
+- **Cause:** `BasedOnStyles = Vale` turns on `Vale.Spelling`, which flags technical words (AsciiDoc, Gerrit, DITA) as errors. codespell already checks spelling.
+- **Fix:** Add `Vale.Spelling = NO` under `[*.{md,mdx}]` in `.vale.ini`.
+
+### Every Vale warning failed the pull request, not only errors
+- **Symptom:** After fixing the only error in my first blog post, Vale still failed. The remaining findings were warnings and suggestions, such as `[Google.We] Try to avoid using first-person plural like 'we'`.
+- **Cause:** The workflow sets `fail_on_error: true`. In the Vale action, that fails the check on any reported finding, including warnings and suggestions. (Claude first told me warnings wouldn't fail the check. That was wrong, and the second run proved it.)
+- **Fix:** Blog posts are meant to be first person, so I run Vale on the blog with errors only. In `docs-checks.yml`, the `vale` job checks `src/pages` and `README.md` with the original settings, and a new `vale-blog` job checks `blog` with `vale_flags: "--minAlertLevel=error"`. *(Not yet confirmed: after pushing, PR #2 should show both `vale` and `vale-blog` as green.)*
+- **Why not change `.vale.ini`:** `MinAlertLevel` is a global setting. Vale doesn't allow a different value for one folder, so the per-folder difference has to live in the workflow.
+- **Watch out:** With the original settings, editing the About or Resume page can fail Vale on normal first-person words like "I" and "my".
+
+### Error: "reviewdog: Too many results (annotations) in diff"
+- **Cause:** GitHub shows at most 10 warning and 10 error annotations per step, so long result lists get cut off.
+- **Impact:** This message on its own doesn't mean there are hidden errors. Errors and warnings have separate limits, so if no error annotations appear, there were no errors.
+- **Fix:** To see every finding, open the run in the **Actions** tab and read the full log of the Vale step.
+
+### Commas and periods go inside quotation marks
+- **Symptom:** `[Google.Quotes] Commas and periods go inside quotation marks.` on `with "The following example…", so`.
+- **Fix:** Rewrite the sentence, or, when quoting literal text, use code formatting: `` `The following example…` ``. Vale skips code.
+
+### The link checker skips LinkedIn
+- **Cause:** LinkedIn blocks automated tools and answers link checkers with an error (often status 999), even when the page works in a browser. Without an exception, Lychee would fail every pull request on the LinkedIn link on the Resume page.
+- **Fix:** `.lycheeignore` contains `https://www.linkedin.com/.*`, so Lychee skips LinkedIn links. Check them by hand now and then.
+
+### GitHub Desktop showed "Failed" while the checks were still running
+- **Cause:** While a new run is in progress, GitHub Desktop keeps showing the previous run's result next to steps with yellow "in progress" dots.
+- **Fix:** Wait for the run to finish, then reopen the checks popup or click **Re-run Checks** to refresh.
+
+### Warning: "Node.js 20 is deprecated … actions/checkout@v4"
+- **Impact:** Harmless for now. GitHub runs the action on Node 24 anyway.
+- **Fix (later):** Change `actions/checkout@v4` to `actions/checkout@v5` in the workflow files.
+- **Also seen:** "The ubuntu-latest label will migrate to Ubuntu 26". Only an announcement, so nothing to do.
 
 ## Publishing to GitHub Pages
 
